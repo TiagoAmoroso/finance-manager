@@ -22,10 +22,14 @@ public class SecurityConfig{
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
-        
+        // Default login is user password for testing
         return http
+                .csrf(csrf -> csrf.disable()) // Disabling CSRF protection for testing
                 .authorizeHttpRequests( auth -> {
-                    auth.requestMatchers("/").permitAll();
+                    auth.requestMatchers(
+                        "/"//,
+                    //"/api/transactions" //for testing, I am removing login requirements to use the api
+                    ).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .oauth2Login(withDefaults())
